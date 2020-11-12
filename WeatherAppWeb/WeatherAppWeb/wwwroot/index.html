@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Application</title>
+    <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+
+    <script>
+        async function GetDataFromApi(api_url_final) {
+
+            response = await fetch(api_url_final);
+            data = await response.json();
+            const { city, icon, wind, temp, summary } = data;
+
+            document.getElementById('city').textContent = city;
+            document.getElementById('temp').textContent = Math.round(temp);
+            document.getElementById('summ').textContent = summary;
+            document.getElementById('wind').textContent = wind;
+
+            var img = new Image();
+            img.src = ('http://openweathermap.org/img/w/' + icon + ".png");
+            document.getElementById("img-container").appendChild(img);
+
+        }
+        function GetCity() {
+            document.getElementById("submit").addEventListener("click", function () {
+                GetDataFromApi('https://localhost:44354/api/weather/weatherjson/' + document.getElementById("cityName").value);
+            });
+        }
+    </script>
+
+    <div class="topWidget">
+        <div class="onTopPanel">
+            <input type="text" id="cityName" />
+            <input value="Refresh" type="submit" id="submit" onclick="GetCity();"/>
+        </div>
+    </div>
+
+    <div class="widget">
+
+        <div class="left-panel panel">
+            <div class="date">
+                <script>document.write(new Date().toDateString());</script>
+            </div>
+            <div class="city">
+                <p id="city"></p>
+            </div>
+            <div class="temp">
+                <p id="temp"></p>
+            </div>
+        </div>
+        <div class="right-panel panel" id="image-container">
+            <p id="summ"></p>
+            <p id="wind"></p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
